@@ -1,9 +1,14 @@
 {
-  "name": "conduit-cypress",
+  "name": "cypress-conduit",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "main": "cypress.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "cypress": "^15.0.0"
+    "cypress": "^15.3.0"
   }
 }
