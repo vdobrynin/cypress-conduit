@@ -68,7 +68,7 @@ it.only('delete article', () => {                   // create, then delete artic
 
     cy.loginToApplication()
     cy.contains('Test title Cypress').click()
-    cy.intercept('GET', '**/articles*').as('artcileApiCall')         // to fix false negative assertion
+    cy.intercept('GET', '**/articles*').as('artcileApiCall')   // to fix false negative assertion to wait (see below)
     cy.contains('button', 'Delete Article').first().click()                                     // delete article
     cy.wait('@artcileApiCall')                                          // wait to articles loading    
     cy.get('app-article-list').should('not.contain.text', 'Test title Cypress')                 // validation
