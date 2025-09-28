@@ -1,7 +1,6 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  
   e2e: {
     baseUrl: 'https://conduit.bondaracademy.com/',
     setupNodeEvents(on, config) {
@@ -9,5 +8,6 @@ module.exports = defineConfig({
     },
   },
   viewportWidth: 2065,
-  viewportHeight: 1329
+  viewportHeight: 1329,
+  video: false,
 });
