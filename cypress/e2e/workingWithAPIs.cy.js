@@ -20,7 +20,7 @@ it('modify api response', () => {                      // #55 mocking api respon
     cy.get('app-favorite-button').first().should('contain.text', '9999999') // assertion
 })
 
-it.only('waiting the browser api calls', () => {                    // dynamically wait          
+it('waiting the browser api calls', () => {                    // dynamically wait for data         
     cy.intercept('GET', '**/articles*').as('artcileApiCall')    // waiting for browser api calls #57.2
     cy.loginToApplication()                                         // #57.1
     // cy.wait('@artcileApiCall')                               // call alias for all articles loads #57.2 'simple'
@@ -28,45 +28,42 @@ it.only('waiting the browser api calls', () => {                    // dynamical
         console.log(apiArticleObject)
         expect(apiArticleObject.response.body.articles[0].title).to.contain('Bondar Academy')
     })
-    // cy.get('app-article-list').should('contain.text', 'Bondar Academy')     // scenario #1 NOT Preferable #57.1
+    // cy.get('app-article-list').should('contain.text', 'Bondar Academy')     // scenario #1 --> NOT Preferable #57.1
     cy.get('app-article-list').invoke('text').then(allArticleTexts => {     // scenario #2 #57.2
         expect(allArticleTexts).to.contain('Bondar Academy')
     })
 })
 
-it('delete article', () => {                   // create, then delete article
-    // cy.request({                                                        // 1st request using object
-    //     url: 'https://conduit-api.bondaracademy.com/api/users/login',
-    //     method: 'POST',
-    //     body: {
-    //         "user": {
-    //             "email": "pwtest60@test.com",
-    //             "password": "vd12345"
-    //         }
-    //     }
-    // }).then(response => {                                           // 1st response
-    cy.loginToApplication()
-    cy.get('@accessToken').then(accessToken => {            // *** calling alias accessToken after creation in commands
-        // expect(response.status).to.equal(200)                       // validate 
-        // const accessToken = 'Token ' + response.body.user.token
-        cy.request({                                                    // 2nd request with Token
+it.only('delete article', () => {                       // create, then delete article #59
+    cy.request({                                                       // 1st request using object #59.1
+        url: 'https://conduit-api.bondaracademy.com/api/users/login',
+        method: 'POST',
+        body: {
+            "user": {
+                "email": "pwtest60@test.com",
+                "password": "vd12345"
+            }
+        }
+    }).then(response => {                                       // 1st response #59.1
+        expect(response.status).to.equal(200)                       // validate status should be 200 creating article
+        const accessToken = 'Token ' + response.body.user.token             // assessed to the token
+        cy.request({                                                                // 2nd request with Token #59.1
             url: 'https://conduit-api.bondaracademy.com/api/articles/',
             method: 'POST',
             body: {
                 "article": {
                     "title": "Test Title Cypress",
-                    "description": "Some description",
-                    "body": "This is a body",
+                    "description": "This is description",
+                    "body": "body",
                     "tagList": []
                 }
             },
-            headers: { 'Authorization': 'Token ' + accessToken }
+            headers: { 'Authorization': accessToken }        // 4th property that we need 
         }).then(response => {                                       // 2nd response
-            expect(response.status).to.equal(201)                                   // status should be 201
+            expect(response.status).to.equal(201)                           // status should be 201                      
             expect(response.body.article.title).to.equal('Test Title Cypress')     // title validation
         })
     })
-    
     cy.loginToApplication()
     cy.contains('Test Title Cypress').click()
     cy.intercept('GET', '**/articles*').as('artcileApiCall')   // to fix false negative assertion to wait (see below)
