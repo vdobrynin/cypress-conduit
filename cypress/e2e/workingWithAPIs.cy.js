@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
 
-it('first test', () => {
+it.only('first test', () => {
     // cy.intercept({ method: 'GET', pathname: 'tags' }, { fixture: 'tags.json' })  //router matcher #56
-    // cy.intercept('GET', 'https://conduit-api.bondaracademy.com/api/tags', { fixture: 'tags.json' }) // #54 
-    // cy.intercept('GET', 'https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0', { fixture: 'articles.json' }) // #54
-    cy.intercept('GET', '**/tags', { fixture: 'tags.json' })                 // wild card #54
-    cy.intercept('GET', '**/articles*', { fixture: 'articles.json' })        // wild card #54
+    cy.intercept('GET', '**/tags', { fixture: 'tags.json' })                 // wild card #54.2
+    cy.intercept('GET', '**/articles*', { fixture: 'articles.json' })        // wild card #54.2
+    // cy.intercept('GET', 'https://conduit-api.bondaracademy.com/api/tags', { fixture: 'tags.json' }) //#54.1 
+    // cy.intercept('GET', 'https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0', { fixture: 'articles.json' }) //#54.2
     cy.loginToApplication()
 })
 

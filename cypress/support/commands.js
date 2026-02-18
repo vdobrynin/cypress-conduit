@@ -44,7 +44,7 @@ Cypress.Commands.add('loginToApplication', () => {
             }
         })
     }) 
-    // cy.visit('/')                       // --> we modified login below     // #37 during review 1st time, then #51 2nd time
+    // cy.visit('/')              // --> #53 we modified login below   //at #37 during review 1st time, then at #51 2nd time
     // cy.contains('Sign in').click()
     // cy.get('[placeholder="Email"]').type('pwtest60@test.com')
     // cy.get('[placeholder="Password"]').type('vd12345')
