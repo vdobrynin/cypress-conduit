@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-it.only('first test', () => {
+it('first test', () => {
     cy.intercept({ method: 'GET', pathname: 'tags' }, { fixture: 'tags.json' })  //--> router matcher #56
     // cy.intercept('GET', '**/tags', { fixture: 'tags.json' })                 // wild card #54.2
     cy.intercept('GET', '**/articles*', { fixture: 'articles.json' })        // wild card #54.2
@@ -20,16 +20,16 @@ it('modify api response', () => {                      // #55 mocking api respon
     cy.get('app-favorite-button').first().should('contain.text', '9999999') // assertion
 })
 
-it('waiting for apis', () => {                              // waiting for browser api calls #57
-    cy.intercept('GET', '**/articles*').as('artcileApiCall')
-    cy.loginToApplication()
-    // cy.wait('@artcileApiCall')                               // call alias for all articles loads
-    cy.wait('@artcileApiCall').then(apiArticleObject => {           // call alias for all articles loads
+it.only('waiting the browser api calls', () => {                    // dynamically wait          
+    cy.intercept('GET', '**/articles*').as('artcileApiCall')    // waiting for browser api calls #57.2
+    cy.loginToApplication()                                         // #57.1
+    // cy.wait('@artcileApiCall')                               // call alias for all articles loads #57.2 'simple'
+    cy.wait('@artcileApiCall').then(apiArticleObject => {           // call alias for all articles loads #57.3
         console.log(apiArticleObject)
         expect(apiArticleObject.response.body.articles[0].title).to.contain('Bondar Academy')
     })
-    // cy.get('app-article-list').should('contain.text', 'Bondar Academy')     // scenario #1 NOT preferable
-    cy.get('app-article-list').invoke('text').then(allArticleTexts => {     // scenario #2
+    // cy.get('app-article-list').should('contain.text', 'Bondar Academy')     // scenario #1 NOT Preferable #57.1
+    cy.get('app-article-list').invoke('text').then(allArticleTexts => {     // scenario #2 #57.2
         expect(allArticleTexts).to.contain('Bondar Academy')
     })
 })
