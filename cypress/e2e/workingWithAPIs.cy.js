@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-it.only('first test', () => {
+it('first test', () => {
     // cy.intercept({ method: 'GET', pathname: 'tags' }, { fixture: 'tags.json' })  //router matcher #56
     cy.intercept('GET', '**/tags', { fixture: 'tags.json' })                 // wild card #54.2
     cy.intercept('GET', '**/articles*', { fixture: 'articles.json' })        // wild card #54.2
@@ -9,15 +9,15 @@ it.only('first test', () => {
     cy.loginToApplication()
 })
 
-it('modify api response', () => {                      // #55 mocking api response
-    cy.intercept('GET', '**/articles*', req => {
-        req.continue(res => {
-            res.body.articles[0].favoritesCount = 9999999
-            res.send(res.body)
+it.only('modify api response', () => {                      // #55 mocking api response
+    cy.intercept('GET', '**/articles*', req => {   // request
+        req.continue(res => {                  // request object to respond object from the server with body.articles.favoritesCount
+            res.body.articles[0].favoritesCount = 9999999 // that we are looking for 'likes' to modify
+            res.send(res.body)          // call respond one more time to send modify response 'res.body'
         })
     })
     cy.loginToApplication()
-    cy.get('app-favorite-button').first().should('contain.text', '9999999')
+    cy.get('app-favorite-button').first().should('contain.text', '9999999') // assertion
 })
 
 it('waiting for apis', () => {                              // waiting for browser api calls #57
