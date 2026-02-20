@@ -34,7 +34,7 @@ it('waiting the browser api calls', () => {                    // dynamically wa
     })
 })
 
-it.only('delete article', () => {                       // create, then delete article #59
+it('delete article', () => {                       // create, then delete article #59
     cy.request({                                                       // 1st request using object #59.1
         url: 'https://conduit-api.bondaracademy.com/api/users/login',
         method: 'POST',
@@ -72,7 +72,7 @@ it.only('delete article', () => {                       // create, then delete a
     cy.get('app-article-list').should('not.contain.text', 'Test Title Cypress')                 // validation
 })
 
-it('e2e api testing', () => {
+it.only('e2e api testing', () => {
     cy.request({                                                        // 1st request using object
         url: 'https://conduit-api.bondaracademy.com/api/users/login',
         method: 'POST',
@@ -110,18 +110,18 @@ it('e2e api testing', () => {
         }).then(response => {
             expect(response.status).to.equal(200)
             expect(response.body.articles[0].title).to.equal('Test Title Cypress API Testing')  // validation deletion of title
-            const slugID = response.body.articles[0].slug                                         // create slugID
+            const slugID = response.body.articles[0].slug                                         // create slugID for deleting
 
             cy.request({                                                            // 2nd req validation slug of 1st article
-                url: `https://conduit-api.bondaracademy.com/api/articles/${slugID}`, // slugID
+                url: `https://conduit-api.bondaracademy.com/api/articles/${slugID}`, // slugID to delete article use backticks 
                 method: 'DELETE',
                 headers: { 'Authorization': accessToken }
-            }).then(response => {
+            }).then(response => {                                               // response
                 expect(response.status).to.equal(204)                               // validation of deletion
             })
         })
 
-        cy.request({                                                                   // 3d req  validation of article NOT present  
+        cy.request({                                                                 // 3d req to validation of article NOT present  
             url: 'https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0',
             method: 'GET',
             headers: { 'Authorization': accessToken }
