@@ -9,18 +9,7 @@ it('first test', () => {
     cy.loginToApplication()
 })
 
-it.only('modify api response', () => {                 // modifying at #64     // #55 mocking api response
-    cy.intercept('GET', '**/articles*', req => {   // request
-        req.continue(res => {                  // request object to respond object from the server with body.articles.favoritesCount
-            res.body.articles[0].favoritesCount = 9999999 // that we are looking for 'likes' to modify
-            res.send(res.body)          // call respond one more time to send modify response 'res.body'
-        })
-    })
-    cy.loginToApplication()
-    cy.get('app-favorite-button').first().should('contain.text', '99999999') // change assertion from '9999999' to '99999999' to fail
-})
-
-// it('modify api response', () => {                      // commented at #64  // #55 mocking api response
+// it('modify api response', { retries: 2 }, () => {  // modifying at #64.2 to 3 attempts custom setting //#55 mocking api response
 //     cy.intercept('GET', '**/articles*', req => {   // request
 //         req.continue(res => {                  // request object to respond object from the server with body.articles.favoritesCount
 //             res.body.articles[0].favoritesCount = 9999999 // that we are looking for 'likes' to modify
@@ -28,8 +17,30 @@ it.only('modify api response', () => {                 // modifying at #64     /
 //         })
 //     })
 //     cy.loginToApplication()
-//     cy.get('app-favorite-button').first().should('contain.text', '9999999') // assertion
+//     cy.get('app-favorite-button').first().should('contain.text', '99999999') // change assertion from '9999999' to '99999999' to fail
 // })
+
+// it('modify api response', () => {        // modifying at #64.1 retries in config.js  // #55 mocking api response
+//     cy.intercept('GET', '**/articles*', req => {   // request
+//         req.continue(res => {                  // request object to respond object from the server with body.articles.favoritesCount
+//             res.body.articles[0].favoritesCount = 9999999 // that we are looking for 'likes' to modify
+//             res.send(res.body)          // call respond one more time to send modify response 'res.body'
+//         })
+//     })
+//     cy.loginToApplication()
+//     cy.get('app-favorite-button').first().should('contain.text', '99999999') // change assertion from '9999999' to '99999999' to fail
+// })
+
+it('modify api response', () => {               // commented at #64  // #55 mocking api response
+    cy.intercept('GET', '**/articles*', req => {   // request
+        req.continue(res => {                  // request object to respond object from the server with body.articles.favoritesCount
+            res.body.articles[0].favoritesCount = 9999999 // that we are looking for 'likes' to modify
+            res.send(res.body)          // call respond one more time to send modify response 'res.body'
+        })
+    })
+    cy.loginToApplication()
+    cy.get('app-favorite-button').first().should('contain.text', '9999999') // assertion
+})
 
 it('waiting the browser api calls', () => {                    // dynamically wait for data         
     cy.intercept('GET', '**/articles*').as('artcileApiCall')    // waiting for browser api calls #57.2
