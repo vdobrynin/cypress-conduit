@@ -30,7 +30,7 @@ Cypress.Commands.add('loginToApplication', () => {
         method: 'POST',
         body: {
             "user": {
-                "email": Cypress.env('userName'),
+                "email": Cypress.env('username'),
                 "password": Cypress.env('password')
             }
         }

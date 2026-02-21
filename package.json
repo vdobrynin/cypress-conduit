@@ -6,7 +6,9 @@
   "license": "ISC",
   "main": "cypress.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cy_run_dev": "npx cypress open --env username='helloDEV@test.com',password='12345vd'",
+    "cy_run_QA": "npx cypress open --env username='helloQA@test.com',password='12345vd'"
   },
   "devDependencies": {
     "cypress": "^15.10.0",
