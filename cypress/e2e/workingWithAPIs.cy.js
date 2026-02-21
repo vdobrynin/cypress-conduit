@@ -78,7 +78,7 @@ it('delete article-2', () => {                       // create, then delete arti
         // expect(response.status).to.equal(200)        // validate status should be 200 creating article // --> no need it at #61
         // const accessToken = 'Token ' + response.body.user.token             // assessed to the token // --> no need it at #61
         cy.request({                                                                // 2nd request with Token #59.1
-            url: 'https://conduit-api.bondaracademy.com/api/articles/',
+            url: Cypress.env('apiUrl') + '/articles/',           //--> change to env at #63
             method: 'POST',
             body: {
                 "article": {
@@ -104,7 +104,7 @@ it('delete article-2', () => {                       // create, then delete arti
 
 it('e2e api testing', () => {
     cy.request({                                                        // 1st request using object
-        url: 'https://conduit-api.bondaracademy.com/api/users/login',
+        url: Cypress.env('apiUrl') + '/users/login',                //--> change to env at #63
         method: 'POST',
         body: {
             "user": {
@@ -117,7 +117,7 @@ it('e2e api testing', () => {
         const accessToken = 'Token ' + response.body.user.token
 
         cy.request({                                                    // 2nd request with Token
-            url: 'https://conduit-api.bondaracademy.com/api/articles/',
+            url: Cypress.env('apiUrl') + '/articles/',              //--> change to env at #63
             method: 'POST',
             body: {
                 "article": {
@@ -134,16 +134,17 @@ it('e2e api testing', () => {
         })
 
         cy.request({                                                                   // 1st req  validation of deletion   
-            url: 'https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0',
+            url: Cypress.env('apiUrl') + '/articles?limit=10&offset=0',         //--> change to env at #63
             method: 'GET',
             headers: { 'Authorization': accessToken }
         }).then(response => {
             expect(response.status).to.equal(200)
+            cy.wait(300)
             expect(response.body.articles[0].title).to.equal('Test Title Cypress API Testing')  // validation deletion of title
             const slugID = response.body.articles[0].slug                                         // create slugID for deleting
 
             cy.request({                                                            // 2nd req validation slug of 1st article
-                url: `https://conduit-api.bondaracademy.com/api/articles/${slugID}`, // slugID to delete article use backticks 
+                url: `${Cypress.env('apiUrl')}/articles/${slugID}`, // slugID to delete article use backticks 
                 method: 'DELETE',
                 headers: { 'Authorization': accessToken }
             }).then(response => {                                               // response
@@ -152,7 +153,7 @@ it('e2e api testing', () => {
         })
 
         cy.request({                                                                 // 3d req to validation of article NOT present  
-            url: 'https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0',
+            url: Cypress.env('apiUrl') + '/articles?limit=10&offset=0',         //--> change to env at #63
             method: 'GET',
             headers: { 'Authorization': accessToken }
         }).then(response => {
